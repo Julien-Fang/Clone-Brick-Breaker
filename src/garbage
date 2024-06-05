@@ -1,0 +1,187 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+// interface Node {
+//     x: number;
+//     y: number;
+// }
+
+
+// class AStar {
+//     map: any; // Define appropriate types
+//     startX: number;
+//     startY: number; 
+//     endX:number ;
+//     endY:number ;
+// ;   openList: any[] ;
+// ;   closedList: any[]; 
+// ;   path: any[];
+// ;    constructor(map: any, startX: number, startY: number, endX: number, endY: number) {
+// ;        this.map = map;
+//         this.startX = startX;
+//         this.startY = startY;
+//         this.endX = endX;
+//         this.endY = endY;
+//         this.openList = [];
+//         this.closedList = [];
+//         this.path = [];
+//     }
+
+//     // Fonction pour calculer le coût heuristique
+//     heuristic(node: Node) {
+//         // Exemple de distance de Manhattan
+//         return Math.abs(node.x - this.endX) + Math.abs(node.y - this.endY);
+//     }
+
+//     // Fonction pour trouver le chemin
+//     findPath() {
+//         // Initialiser les listes ouvertes et fermées
+//         this.openList.push({x: this.startX, y: this.startY, f: 0, g: 0, h: 0, parent: null});
+
+//         while (this.openList.length > 0) {
+//             // Trouver le nœud avec le coût total le plus bas dans la liste ouverte
+//             let currentNode = this.openList.reduce((minNode, nextNode) => nextNode.f < minNode.f ? nextNode : minNode);
+//             // Retirer le nœud actuel de la liste ouverte et l'ajouter à la liste fermée
+//             this.openList = this.openList.filter(node => node !== currentNode);
+//             this.closedList.push(currentNode);
+
+//             // Si le nœud actuel est le nœud de fin, reconstruire le chemin
+//             if (currentNode.x === this.endX && currentNode.y === this.endY) {
+//                 let current = currentNode;
+//                 while (current.parent) {
+//                     this.path.push({x: current.x, y: current.y});
+//                     current = current.parent;
+//                 }
+//                 return this.path.reverse();
+//             }
+
+//             // Générer les nœuds adjacents
+//             let neighbors = [
+//                 {x: currentNode.x - 1, y: currentNode.y},
+//                 {x: currentNode.x + 1, y: currentNode.y},
+//                 {x: currentNode.x, y: currentNode.y - 1},
+//                 {x: currentNode.x, y: currentNode.y + 1}
+//             ];
+
+//             neighbors.forEach(neighbor => {
+//                 // Vérifier si le voisin est traversable
+//                 if (this.map.isWalkable(neighbor.x, neighbor.y)) {
+//                     // Vérifier si le voisin est dans la liste fermée
+//                     if (!this.closedList.find(node => node.x === neighbor.x && node.y === neighbor.y)) {
+//                         let gScore = currentNode.g + 1; // Coût de déplacement depuis le nœud initial
+//                         let hScore = this.heuristic(neighbor); // Coût heuristique
+//                         let fScore = gScore + hScore; // Coût total
+//                         // Vérifier si le voisin est déjà dans la liste ouverte
+//                         let existingNode = this.openList.find(node => node.x === neighbor.x && node.y === neighbor.y);
+//                         if (existingNode) {
+//                             // Si le nouveau chemin est meilleur, mettre à jour les informations du nœud
+//                             if (gScore < existingNode.g) {
+//                                 existingNode.g = gScore;
+//                                 existingNode.f = fScore;
+//                                 existingNode.parent = currentNode;
+//                             }
+//                         } else {
+//                             // Ajouter le voisin à la liste ouverte
+//                             this.openList.push({x: neighbor.x, y: neighbor.y, f: fScore, g: gScore, h: hScore, parent: currentNode});
+//                         }
+//                     }
+//                 }
+//             });
+//         }
+//         // Aucun chemin trouvé
+//         return null;
+//     }
+// }
+
+// // Exemple d'utilisation
+// class Map {
+//     width: number;
+//     height: number;
+//     constructor(width: number, height: number) {
+//         this.width = width;
+//         this.height = height;
+//     }
+
+//     isWalkable(x: number, y: number) {
+//         // Vérifiez si la case est traversable dans votre implémentation
+//         return true;
+//     }
+// }
+
+// // Création de la carte et de l'algorithme A*
+// const map = new Map(10, 10); // Par exemple, une carte de 10x10
+// const astar = new AStar(map, 0, 0, 9, 9); // Définissez les coordonnées de départ et d'arrivée
+
+// // Trouver le chemin
+// const path = astar.findPath();
+// interface Tile {
+//     type: string;
+//     // Add any other properties you need for each tile
+// }
+
+// function drawMap(canvas: HTMLCanvasElement, map: Tile[][]) {
+//     const ctx = canvas.getContext("2d");
+//     if (ctx) {
+//         const tileSize = 32; // Adjust the size of each tile as needed
+//         canvas.width = map[0].length * tileSize;
+//         canvas.height = map.length * tileSize;
+
+//         for (let y = 0; y < map.length; y++) {
+//             for (let x = 0; x < map[y].length; x++) {
+//                 const tile = map[y][x];
+//                 // Depending on the tile type, you can draw different graphics
+//                 switch (tile.type) {
+//                     case "grass":
+//                         ctx.fillStyle = "green";
+//                         break;
+//                     case "water":
+//                         ctx.fillStyle = "blue";
+//                         break;
+//                     // Add more cases for other tile types as needed
+//                     default:
+//                         ctx.fillStyle = "gray";
+//                 }
+//                 ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+//             }
+//         }
+//     } else {
+//         console.error("Unable to get 2D context for canvas.");
+//     }
+// }
+
+// // Affichage du résultat dans le canvas
+// const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement | null;
+
+// if (canvas) {
+//     // drawMap function needs to be defined or imported
+//     drawMap(canvas, map); // Dessiner la carte
+
+//     if (path) {
+//         // Dessiner le chemin si un chemin a été trouvé
+//         const ctx = canvas.getContext("2d");
+//         if (ctx) {
+//             ctx.strokeStyle = "red";
+//             ctx.lineWidth = 3;
+//             ctx.beginPath();
+//             ctx.moveTo(path[0].x * tileSize + tileSize / 2, path[0].y * tileSize + tileSize / 2);
+//             for (let i = 1; i < path.length; i++) {
+//                 ctx.lineTo(path[i].x * tileSize + tileSize / 2, path[i].y * tileSize + tileSize / 2);
+//             }
+//             ctx.stroke();
+//         } else {
+//             console.error("Unable to get 2D context for canvas.");
+//         }
+//     }
+// } else {
+//     console.error("Canvas element not found.");
+// }

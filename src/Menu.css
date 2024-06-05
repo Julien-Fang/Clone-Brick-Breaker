@@ -1,0 +1,43 @@
+.custom-btn {
+    /* font-size: 1.5rem; Taille de police personnalisée */
+    padding: 15px 25px; /* Rembourrage personnalisé */
+  }
+
+  .background {
+    background-image: url('/public/images/background_map.jpg');
+    background-size: cover; /* Ajustez la taille de l'image pour remplir le conteneur */
+    background-position: center; /* Centrez l'image */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    height: 100vh;
+  }
+
+
+ button {
+    background-color: #001f3f; /* Bleu foncé */
+    color: #ffffff; /* Blanc pour le texte */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -200px;
+    width: 200px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* Blanc semi-transparent */
+    transform: skewX(45deg);
+    transition: transform 0.5s;
+  }
+  
+button:hover::before {
+    transform: skewX(-45deg) translateX(100%);
+  }
+  
+  
